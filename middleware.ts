@@ -41,12 +41,6 @@ export default async function middleware(req: NextRequest) {
     );
   }
 
-  if (hostname === "app.mtsklrck.com") {
-    return NextResponse.redirect(
-      "/home",
-    );
-  }
-
   // rewrite root application to `/home` folder
   if (
     hostname === "localhost:3000" ||
