@@ -1,4 +1,4 @@
-// import Image from "next/image";
+import Image from "next/image";
 import Link from "next/link";
 import { ReactNode } from "react";
 import CTA from "@/components/cta";
@@ -48,12 +48,12 @@ export async function generateMetadata({
     icons: [logo],
     metadataBase: new URL(`https://${domain}`),
     // Optional: Set canonical URL to custom domain if it exists
-    // ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
-    //   data.customDomain && {
-    //     alternates: {
-    //       canonical: `https://${data.customDomain}`,
-    //     },
-    //   }),
+    ...(params.domain.endsWith(`.${process.env.NEXT_PUBLIC_ROOT_DOMAIN}`) &&
+       data.customDomain && {
+         alternates: {
+           canonical: `https://${data.customDomain}`,
+         },
+       }),
   };
 }
 
@@ -86,12 +86,12 @@ export default async function SiteLayout({
         <div className="mx-auto flex h-full max-w-screen-xl items-center justify-center space-x-5 px-10 sm:px-20">
           <Link href="/" className="flex items-center justify-center">
             <div className="inline-block h-8 w-8 overflow-hidden rounded-full align-middle">
-              {/*<Image
+              <Image
                 alt={data.name || ""}
                 height={40}
                 src={data.logo || ""}
                 width={40}
-              />*/}
+              />
             </div>
             <span className="ml-3 inline-block truncate font-title font-medium">
               {data.name}

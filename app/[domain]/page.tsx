@@ -4,8 +4,9 @@ import { notFound } from "next/navigation";
 import BlurImage from "@/components/blur-image";
 import { placeholderBlurhash, toDateString } from "@/lib/utils";
 import BlogCard from "@/components/blog-card";
-import { getPostsForSite, getSiteData } from "@/lib/fetchers";
+import { getPostsForSite, getSiteData, getPostData } from "@/lib/fetchers";
 import Image from "next/image";
+import MDX from "@/components/mdx";
 
 export async function generateStaticParams() {
   const allSites = await prisma.site.findMany({
@@ -43,6 +44,7 @@ export default async function SiteHomePage({
     getSiteData(domain),
     getPostsForSite(domain),
   ]);
+  const page = await getPostData(domain, posts[0].slug);
 
   if (!data) {
     notFound();
@@ -51,7 +53,8 @@ export default async function SiteHomePage({
   return (
     <>
       <div className="mb-20 w-full">
-        {posts.length > 0 ? (
+      <MDX source={page?.mdxSource!} />
+        {/*{posts.length > 0 ? (
           <div className="mx-auto w-full max-w-screen-xl md:mb-28 lg:w-5/6">
             <Link href={`/${posts[0].slug}`}>
               <div className="group relative mx-auto h-80 w-full overflow-hidden sm:h-150 lg:rounded-xl">
@@ -119,21 +122,8 @@ export default async function SiteHomePage({
               No posts yet.
             </p>
           </div>
-        )}
+        )}*/}
       </div>
-
-      {posts.length > 1 && (
-        <div className="mx-5 mb-20 max-w-screen-xl lg:mx-24 2xl:mx-auto">
-          <h2 className="mb-10 font-title text-4xl dark:text-white md:text-5xl">
-            More stories
-          </h2>
-          <div className="grid w-full grid-cols-1 gap-x-4 gap-y-8 md:grid-cols-2 xl:grid-cols-3">
-            {posts.slice(1).map((metadata: any, index: number) => (
-              <BlogCard key={index} data={metadata} />
-            ))}
-          </div>
-        </div>
-      )}
     </>
   );
 }
